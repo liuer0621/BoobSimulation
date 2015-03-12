@@ -17,7 +17,7 @@
 
 float cameraX = 0.0f;
 float cameraY = 0.0f;
-float cameraZ = -50.0f;
+float cameraZ = -10.0f;
 
 //obj define
 objLoader boob;
@@ -61,6 +61,32 @@ void display(void)
     
     //setup the camera
     gluLookAt(cameraX, cameraY, cameraZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+    
+    //lighting setup
+    GLfloat LightAmbient[] = {0.3f,0.3f,0.3f,1.0f};
+    GLfloat LightDiffuse[] = {0.8f,0.8f,0.8f,1.0f};
+    GLfloat LightSpecular[] = {0.5f,0.5f,0.5f,1.0f};
+    GLfloat LightPosition[] = {10.0f,10.0f,0.0f,0.0f};
+    glShadeModel(GL_SMOOTH); //emable smooth shading
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearDepth(1.0f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    
+    glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpecular);
+    glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
+    
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT1);
+    
+    //two sides lighting
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_COLOR_MATERIAL);
+    
+    glEnable(GL_CULL_FACE); //cut the invisible face
     
     //rotate the camera
     glTranslatef(cameraX, cameraY, cameraZ);
