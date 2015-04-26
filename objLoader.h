@@ -35,6 +35,7 @@ public:
 	
 	bool load(char *filename);
 	void drawObj();
+    void drawPoints();
 	void scale();
 	void KillSpace(FILE *fp);
 	void KillTrash(FILE *fp);

@@ -106,7 +106,8 @@ void display(void)
     //glutSolidSphere(5.0, 10, 10);
     
     //draw the obj
-    boob.drawObj();
+    //boob.drawObj();
+    boob.drawPoints();
     
     glutSwapBuffers();
 }

@@ -53,6 +53,19 @@ void objLoader::scale()
 	centerD = Vector3d((minVX+maxVX)/2.0f,(minVY+maxVY)/2.0f,(minVZ+maxVZ)/2.0f);
 }
 
+void objLoader::drawPoints()
+{
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glPointSize(2.0);
+    glBegin(GL_POINTS);
+    for(int i = 0; i<VerticesCount; i++)
+    {
+        //draw each vertices
+        glVertex3f(VerticeD[i].x, VerticeD[i].y, VerticeD[i].z);
+    }
+    glEnd();
+}
+
 void objLoader::drawObj()
 {	
 	for(int i = 0; i<FaceCount; i++)
