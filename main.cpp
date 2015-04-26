@@ -22,6 +22,9 @@ float cameraZ = -10.0f;
 //obj define
 objLoader boob;
 
+//display mode
+int displayMode = 0;
+
 //camera movement
 int Button;
 float MouseX,MouseY,ThetaX,ThetaY,Pan,Tilt,Approach;
@@ -106,9 +109,9 @@ void display(void)
     //glutSolidSphere(5.0, 10, 10);
     
     //draw the obj
-    //boob.drawObj();
-    boob.drawPoints();
-    
+    std::cout << "displayMode is " << displayMode << "\n";
+    boob.drawObj(displayMode);
+  
     glutSwapBuffers();
 }
 
@@ -166,8 +169,8 @@ void handleMotion(int x, int y)
 void handlekey(unsigned char key, int x, int y)
 {
     
-    std::cout << "cameraX " << cameraX << "\n";
-    std::cout << "cameraZ " << cameraZ << "\n";
+   // std::cout << "cameraX " << cameraX << "\n";
+   // std::cout << "cameraZ " << cameraZ << "\n";
 
     switch (key) {
         
@@ -191,6 +194,10 @@ void handlekey(unsigned char key, int x, int y)
         case 27:
             exit(0);
             break;
+        
+        case 'm' :
+            displayMode += 1;
+            displayMode = displayMode % 3;
             
         default:
             return;

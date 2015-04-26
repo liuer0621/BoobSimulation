@@ -53,58 +53,113 @@ void objLoader::scale()
 	centerD = Vector3d((minVX+maxVX)/2.0f,(minVY+maxVY)/2.0f,(minVZ+maxVZ)/2.0f);
 }
 
-void objLoader::drawPoints()
+void objLoader::drawObj(int drawStatus)
 {
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glPointSize(2.0);
-    glBegin(GL_POINTS);
-    for(int i = 0; i<VerticesCount; i++)
+    /*
+    if drawStatus is 
+    0 : draw face
+    1 : point
+    2 : lines
+    */
+    
+    if(drawStatus == 0) //face
     {
-        //draw each vertices
-        glVertex3f(VerticeD[i].x, VerticeD[i].y, VerticeD[i].z);
+    
+        for(int i = 0; i<FaceCount; i++)
+        {
+            if((int)FaceD[i].w == 0)
+            {
+                glBegin(GL_TRIANGLES);
+                //glNormal3f(FaceNormalD[i].x,FaceNormalD[i].y,FaceNormalD[i].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].x-1].x,VerTexD[(int)FaceTexD[i].x-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].x-1].x,NormalD[(int)FaceNormalD[i].x-1].y,NormalD[(int)FaceNormalD[i].x-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].x-1].x,VerticeD[(int)FaceD[i].x-1].y,VerticeD[(int)FaceD[i].x-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].y-1].x,VerTexD[(int)FaceTexD[i].y-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].y-1].x,NormalD[(int)FaceNormalD[i].y-1].y,NormalD[(int)FaceNormalD[i].y-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].y-1].x,VerticeD[(int)FaceD[i].y-1].y,VerticeD[(int)FaceD[i].y-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].z-1].x,VerTexD[(int)FaceTexD[i].z-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].z-1].x,NormalD[(int)FaceNormalD[i].z-1].y,NormalD[(int)FaceNormalD[i].z-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].z-1].x,VerticeD[(int)FaceD[i].z-1].y,VerticeD[(int)FaceD[i].z-1].z);
+                glEnd();
+            }
+            
+            else
+            {
+                glBegin(GL_QUADS);
+                //glNormal3f(FaceNormalD[i].x,FaceNormalD[i].y,FaceNormalD[i].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].x-1].x,VerTexD[(int)FaceTexD[i].x-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].x-1].x,NormalD[(int)FaceNormalD[i].x-1].y,NormalD[(int)FaceNormalD[i].x-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].x-1].x,VerticeD[(int)FaceD[i].x-1].y,VerticeD[(int)FaceD[i].x-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].y-1].x,VerTexD[(int)FaceTexD[i].y-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].y-1].x,NormalD[(int)FaceNormalD[i].y-1].y,NormalD[(int)FaceNormalD[i].y-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].y-1].x,VerticeD[(int)FaceD[i].y-1].y,VerticeD[(int)FaceD[i].y-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].z-1].x,VerTexD[(int)FaceTexD[i].z-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].z-1].x,NormalD[(int)FaceNormalD[i].z-1].y,NormalD[(int)FaceNormalD[i].z-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].z-1].x,VerticeD[(int)FaceD[i].z-1].y,VerticeD[(int)FaceD[i].z-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].w-1].x,VerTexD[(int)FaceTexD[i].w-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].w-1].x,NormalD[(int)FaceNormalD[i].w-1].y,NormalD[(int)FaceNormalD[i].w-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].w-1].x,VerticeD[(int)FaceD[i].w-1].y,VerticeD[(int)FaceD[i].w-1].z);
+                glEnd();
+            }
+        }
     }
-    glEnd();
-}
+    
+    else if (drawStatus == 1) //points
+    {
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glPointSize(2.0);
+        glBegin(GL_POINTS);
+        for(int i = 0; i<VerticesCount; i++)
+        {
+            //draw each vertices
+            glVertex3f(VerticeD[i].x, VerticeD[i].y, VerticeD[i].z);
+            
+        }
+        glEnd();
 
-void objLoader::drawObj()
-{	
-	for(int i = 0; i<FaceCount; i++)
-	{
-		if((int)FaceD[i].w == 0)
-		{
-			glBegin(GL_TRIANGLES); 
-				//glNormal3f(FaceNormalD[i].x,FaceNormalD[i].y,FaceNormalD[i].z);
-				glTexCoord2f(VerTexD[(int)FaceTexD[i].x-1].x,VerTexD[(int)FaceTexD[i].x-1].y);
-				glNormal3f(NormalD[(int)FaceNormalD[i].x-1].x,NormalD[(int)FaceNormalD[i].x-1].y,NormalD[(int)FaceNormalD[i].x-1].z);
-				glVertex3f(VerticeD[(int)FaceD[i].x-1].x,VerticeD[(int)FaceD[i].x-1].y,VerticeD[(int)FaceD[i].x-1].z);
-				glTexCoord2f(VerTexD[(int)FaceTexD[i].y-1].x,VerTexD[(int)FaceTexD[i].y-1].y);
-				glNormal3f(NormalD[(int)FaceNormalD[i].y-1].x,NormalD[(int)FaceNormalD[i].y-1].y,NormalD[(int)FaceNormalD[i].y-1].z);
-				glVertex3f(VerticeD[(int)FaceD[i].y-1].x,VerticeD[(int)FaceD[i].y-1].y,VerticeD[(int)FaceD[i].y-1].z);
-				glTexCoord2f(VerTexD[(int)FaceTexD[i].z-1].x,VerTexD[(int)FaceTexD[i].z-1].y);
-				glNormal3f(NormalD[(int)FaceNormalD[i].z-1].x,NormalD[(int)FaceNormalD[i].z-1].y,NormalD[(int)FaceNormalD[i].z-1].z);
-				glVertex3f(VerticeD[(int)FaceD[i].z-1].x,VerticeD[(int)FaceD[i].z-1].y,VerticeD[(int)FaceD[i].z-1].z);
-				glEnd();
-		}
-
-		else 
-		{
-			glBegin(GL_QUADS);
-				//glNormal3f(FaceNormalD[i].x,FaceNormalD[i].y,FaceNormalD[i].z);
-				glTexCoord2f(VerTexD[(int)FaceTexD[i].x-1].x,VerTexD[(int)FaceTexD[i].x-1].y);
-				glNormal3f(NormalD[(int)FaceNormalD[i].x-1].x,NormalD[(int)FaceNormalD[i].x-1].y,NormalD[(int)FaceNormalD[i].x-1].z);
-				glVertex3f(VerticeD[(int)FaceD[i].x-1].x,VerticeD[(int)FaceD[i].x-1].y,VerticeD[(int)FaceD[i].x-1].z);
-				glTexCoord2f(VerTexD[(int)FaceTexD[i].y-1].x,VerTexD[(int)FaceTexD[i].y-1].y);
-				glNormal3f(NormalD[(int)FaceNormalD[i].y-1].x,NormalD[(int)FaceNormalD[i].y-1].y,NormalD[(int)FaceNormalD[i].y-1].z);
-				glVertex3f(VerticeD[(int)FaceD[i].y-1].x,VerticeD[(int)FaceD[i].y-1].y,VerticeD[(int)FaceD[i].y-1].z);
-				glTexCoord2f(VerTexD[(int)FaceTexD[i].z-1].x,VerTexD[(int)FaceTexD[i].z-1].y);
-				glNormal3f(NormalD[(int)FaceNormalD[i].z-1].x,NormalD[(int)FaceNormalD[i].z-1].y,NormalD[(int)FaceNormalD[i].z-1].z);
-				glVertex3f(VerticeD[(int)FaceD[i].z-1].x,VerticeD[(int)FaceD[i].z-1].y,VerticeD[(int)FaceD[i].z-1].z);
-				glTexCoord2f(VerTexD[(int)FaceTexD[i].w-1].x,VerTexD[(int)FaceTexD[i].w-1].y);
-				glNormal3f(NormalD[(int)FaceNormalD[i].w-1].x,NormalD[(int)FaceNormalD[i].w-1].y,NormalD[(int)FaceNormalD[i].w-1].z);
-				glVertex3f(VerticeD[(int)FaceD[i].w-1].x,VerticeD[(int)FaceD[i].w-1].y,VerticeD[(int)FaceD[i].w-1].z);
-			glEnd();
-		}
-	}
+    }
+    
+    else if (drawStatus == 2) // lines
+    {
+        for(int i = 0; i<FaceCount; i++)
+        {
+            if((int)FaceD[i].w == 0)
+            {
+                glBegin(GL_LINE_LOOP);
+                //glNormal3f(FaceNormalD[i].x,FaceNormalD[i].y,FaceNormalD[i].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].x-1].x,VerTexD[(int)FaceTexD[i].x-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].x-1].x,NormalD[(int)FaceNormalD[i].x-1].y,NormalD[(int)FaceNormalD[i].x-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].x-1].x,VerticeD[(int)FaceD[i].x-1].y,VerticeD[(int)FaceD[i].x-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].y-1].x,VerTexD[(int)FaceTexD[i].y-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].y-1].x,NormalD[(int)FaceNormalD[i].y-1].y,NormalD[(int)FaceNormalD[i].y-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].y-1].x,VerticeD[(int)FaceD[i].y-1].y,VerticeD[(int)FaceD[i].y-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].z-1].x,VerTexD[(int)FaceTexD[i].z-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].z-1].x,NormalD[(int)FaceNormalD[i].z-1].y,NormalD[(int)FaceNormalD[i].z-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].z-1].x,VerticeD[(int)FaceD[i].z-1].y,VerticeD[(int)FaceD[i].z-1].z);
+                glEnd();
+            }
+            
+            else
+            {
+                glBegin(GL_LINE_LOOP);
+                //glNormal3f(FaceNormalD[i].x,FaceNormalD[i].y,FaceNormalD[i].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].x-1].x,VerTexD[(int)FaceTexD[i].x-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].x-1].x,NormalD[(int)FaceNormalD[i].x-1].y,NormalD[(int)FaceNormalD[i].x-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].x-1].x,VerticeD[(int)FaceD[i].x-1].y,VerticeD[(int)FaceD[i].x-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].y-1].x,VerTexD[(int)FaceTexD[i].y-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].y-1].x,NormalD[(int)FaceNormalD[i].y-1].y,NormalD[(int)FaceNormalD[i].y-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].y-1].x,VerticeD[(int)FaceD[i].y-1].y,VerticeD[(int)FaceD[i].y-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].z-1].x,VerTexD[(int)FaceTexD[i].z-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].z-1].x,NormalD[(int)FaceNormalD[i].z-1].y,NormalD[(int)FaceNormalD[i].z-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].z-1].x,VerticeD[(int)FaceD[i].z-1].y,VerticeD[(int)FaceD[i].z-1].z);
+                glTexCoord2f(VerTexD[(int)FaceTexD[i].w-1].x,VerTexD[(int)FaceTexD[i].w-1].y);
+                glNormal3f(NormalD[(int)FaceNormalD[i].w-1].x,NormalD[(int)FaceNormalD[i].w-1].y,NormalD[(int)FaceNormalD[i].w-1].z);
+                glVertex3f(VerticeD[(int)FaceD[i].w-1].x,VerticeD[(int)FaceD[i].w-1].y,VerticeD[(int)FaceD[i].w-1].z);
+                glEnd();
+            }
+        }
+       
+    }
 }
 
 void objLoader::detectSlash(FILE *fp)
