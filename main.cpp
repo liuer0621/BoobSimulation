@@ -10,8 +10,8 @@
 #include <GLUT/glut.h>
 #include "objLoader.h"
 
-#define WINDOW_WIDTH 350
-#define WINDOW_HEIGHT 350
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 #define ROTFACTOR 2.0f
 #define XLATEFACTOR 2.0f
 
@@ -98,6 +98,8 @@ void display(void)
     //rotate the object
     glRotatef(ThetaY, 0.0f, 1.0f, 0.0f);
     glRotatef(ThetaX, 1.0f, 0.0f, 0.0f);
+    //rotate the object for 180 degree
+    glRotatef(180, 0.0f, 1.0f, 0.0f);
     
     //draw a sphere
     glColor3f(1.0f, 1.0f, 1.0f);
